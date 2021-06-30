@@ -1,10 +1,9 @@
 /*
 Name: Ahmed Julkernain
-ID: 2111224642
 */
 #include<stdio.h>
 #include<string.h>
-#include<stdio.h>
+#include<stdlib.h>
 struct Books{ //book structure
     int bookno;
     char bookname[30];
