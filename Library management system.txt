@@ -1,0 +1,439 @@
+/*
+Name: Ahmed Julkernain
+ID: 2111224642
+*/
+#include<stdio.h>
+#include<string.h>
+#include<stdio.h>
+struct Books{ //book structure
+    int bookno;
+    char bookname[30];
+    char Author[40];
+    int releasedate;
+    char subject[40];
+
+};
+void bookList(void); //function to view book list
+void addBooks(struct Books add[], int size); //function to add books to file
+void TakeBooks(void); //function to borrow book
+void AlevelGradecalc(void); //A-level grade calculator
+void EXIT(void); //function to  exit the program
+int main(void)
+{
+
+    printf("\t\t\t|-------------------------------------------------------------------------|\n");
+    printf("\t\t\t|                                                                         |\n");
+    printf("\t\t\t|                              _____                     _____            |\n");
+    printf("\t\t\t|       /\\         |          |          \\      /      |        |         |\n");
+    printf("\t\t\t|      /  \\        |          |____       \\    /       |____    |         |\n");
+    printf("\t\t\t|     /----\\  ---  |          |            \\  /        |        |         |\n");
+    printf("\t\t\t|    /      \\      |_____     |____         \\/         |____    |_____    |\n ");
+    printf("\t\t\t|                                                                         |\n");
+    printf("\t\t\t|                     ___        ___                  ___                 |\n");
+    printf("\t\t\t|   |         |      |   )      |   )       /\\      |   )    \\  /         |\n");
+    printf("\t\t\t|   |         |      |___)      |___)      /  \\     |___)     \\/          |\n");
+    printf("\t\t\t|   |         |      |   )      | \\       /----\\    | \\       /           |\n");
+    printf("\t\t\t|   |_____    |      |___)      |  \\     /      \\   |  \\     /            |\n");
+    printf("\t\t\t|                                                                         |\n");
+    printf("\t\t\t|                                                                         |\n");
+    printf("\t\t\t|                                               (Made by Ahmed Julkernain)|\n");
+    printf("\t\t\t|-------------------------------------------------------------------------|\n");
+    //The letter 'A and 'R' looks out of place but in this way it appears perfect when running on the console
+    char enter;
+    printf("\n\n");
+    printf("Please Press Enter to Begin>>");//pressing enter here causes the next set of output to appear
+    scanf("%c",&enter);
+
+    printf("\n\n");
+    printf("\t\t\t HELLO! WELCOME TO THE A-LEVEL LIBRARY SYSTEM!\n");
+    printf("\t\t\t To Use the library facilities you must become a member.\n");
+    printf("\t\t\t Please sign-up to become a member\n");
+    printf("press Enter to sign-up");
+    scanf("%c",&enter);//pressing enter here causes the next set of output to appear
+    int size=30;
+    char name[40];
+    char email[size];
+    char pass[size];
+    char cpass[size];//variable to store 'confirm' password and used to check if they match for account making
+    printf("\n");
+    printf("\t\t\t Name: ");
+    fflush(stdin);
+    gets(name);
+    fflush(stdin);
+    printf("\t\t\t Email: ");
+    scanf("%c",email);
+    fflush(stdin);
+
+    char *cpoint,*point;//I am taking two pointers to which will help me to find substrings given in a string
+     cpoint=strstr(pass,"%s");//stores the characters of password
+     point=strstr(cpass,"%s");//again stores the character of the password enter when the use puts in the password in 'confirm password section
+
+    do
+   {
+     printf("\t\t\t Password: ");
+     scanf("%c",pass);
+     fflush(stdin);
+     printf("\t\t\t Confirm Password: ");
+     gets(cpass);
+     }
+     while(cpoint!=point);//if the two password matches, it will allow the user to enter the next step
+
+
+        printf("\t\t\t Account Creation Successful!\n");
+        printf("\n\n");
+        printf("\t\t\t Hello %s Welcome to your Library space!\n",name);
+        printf("\t\t\t##################################################################################\n");
+        printf("\t\t\t#                   |\\  /|   /\\   | |\\ |    |\\  /|  |--  |\\ |  |  |             #\n");
+        printf("\t\t\t#                   | \\/ |  /--\\  | | \\|    | \\/ |  |--  | \\|  (__)             #\n");
+        printf("\t\t\t##################################################################################\n");
+
+        int i;//will be used in the for-loop;
+        int choice;
+        do
+        {   //these are the options for the user
+             printf("\t\t\t|----|------------------------------|\n");
+             printf("\t\t\t|  1 |     VIEW A-LEVEL BOOK LIST   |\n");
+             printf("\t\t\t|----|------------------------------|\n");
+             printf("\t\t\t|  2 |     ADD A-LEVEL BOOKS        |\n");
+             printf("\t\t\t|----|------------------------------|\n");
+             printf("\t\t\t|  3 |     Borrow A-LEVEL BOOK      |\n");
+             printf("\t\t\t|----|------------------------------|\n");
+             printf("\t\t\t|  4 | USE A-LEVEL GRADE CALCULATOR |\n");
+             printf("\t\t\t|----|------------------------------|\n");
+             printf("\t\t\t|  5 |         EXIT\\LOGOUT          |\n");
+             printf("\t\t\t|____|______________________________|\n");
+             printf("\n");
+             printf("\t\t\t Enter Your Choice>>");
+             scanf("%d",&choice);
+
+               switch(choice)
+               {
+               case 1:
+                bookList();
+                break;
+               case 2:{
+                int size;//Variable used to carry the size of books to add/take when calling functions
+                printf("How many books would you like to add?:");
+                scanf(" %d",&size);
+                struct Books add[size];
+                addBooks(add,size);
+                /*I declared the variables inside the 'case' so that my function will know how many values for size to take.
+                otherwise the function does not work and the program crashes*/
+               }
+                break;
+               case 3:
+                TakeBooks();
+                break;
+               case 4:
+                AlevelGradecalc();
+                break;
+               case 5:
+                EXIT();
+                break;
+              default:
+                printf("\t\t\tInput is invalid please try again\n");
+               }
+        }
+        while(choice!=0);
+
+        return 0;
+}
+void bookList(void)//this function is used to view all the books in  the library
+{
+    FILE *fp;
+    fp=fopen("A-LEVELbook.txt","r");
+
+    int i;
+
+    struct Books readbooks[10];
+    //all book details will be taken from a file and they will be read from the file and printed on the screen fro the user to view.
+
+    if(fp!=NULL)
+    {
+            printf("| BOOK NAME              AUTHOR       RELASE DATE    SUBJECT   \n");
+        while(!feof(fp))
+        {
+            fgets(readbooks[i].bookname, 73, fp);
+            printf("----------------------------------------------------------------\n");//all the book detailed are printed in a table
+            printf("%s\n",readbooks[i].bookname);
+        }
+
+        fclose(fp);
+
+    }
+     char ans;//variable taken to store the answer of the user
+     char mmu;//random variable taken to return to main menu and browse the other options if user presses no
+     int size;
+
+     /* After viewing the book list, the user can select to add books without returning to the main function. Hence, I am asking the user
+     whether he/she would like to add books or return to the main menu. If he/she opts for the add book option, I designed the program
+     to call the "addbook" function */
+
+     printf("\t\t\t Would You like to add books?(Y/N): ");
+     scanf(" %c",&ans);
+
+     switch(ans)
+     {
+     case 'Y':{
+     case 'y':
+        printf("How many books would you like to add?:");
+        scanf(" %d",&size);
+        struct Books add[size];
+        addBooks(readbooks,size);//addBook function called.
+     }
+        break;
+     case 'N':{
+     case 'n':
+        printf("Press any key & enter to return to main menu>> ");//will take the user to the main menu
+        scanf(" %c",&mmu);
+        printf("Thank you!\n\n");
+        }
+        break;
+     }
+}
+void addBooks(struct Books add[], int size)//with this function the user can add books and it will be updated in the file where the book is stored
+{
+    int i;
+
+    FILE *fp;//opening a file. The books added will be saved in a file
+
+    fp=fopen("A-LEVELbook.txt","a");
+
+    if(fp!=NULL)
+    {
+        printf("\t\t\tAdding BOOKS-------\n");
+
+        for(i=0; i<size; i++)
+        {
+            printf("\t\t\tBook #%d: \n",i+1);
+            printf("\t\t\tBook Number: ");
+            scanf("%d",&add[i].bookno);
+            fflush(stdin);
+            printf("\t\t\tBook Name: ");
+            fflush(stdin);
+            gets(add[i].bookname);
+            fflush(stdin);
+            printf("\t\t\tAuthor: ");
+            gets(add[i].Author);
+            fflush(stdin);
+            printf("\t\t\tRelease Date: ");
+            scanf("%d",&add[i].releasedate);
+            fflush(stdin);
+            printf("\t\t\tSubject: ");
+            scanf("%s",add[i].subject);
+            fflush(stdin);
+
+            fprintf(fp,"%d| %s  | %s  | %d  | %s  |\n",add[i].bookno, add[i].bookname,add[i].Author,add[i].releasedate,add[i].subject);
+            //books have been added
+
+        }
+        printf("Books Added Successfully!\n\n\n");
+        fclose(fp);
+    }
+    else
+        printf("Unable to add books");
+     char mmu;//random variable taken to return to main menu and browse the other options
+    printf("Press any key & enter to return to main menu>> ");
+    scanf(" %c",&mmu);
+    printf("Thank you!\n\n");
+}
+void TakeBooks(void)
+{
+    FILE *fp;
+    fp=fopen("A-LEVELbook.txt","r");
+    char mmu;//random variable taken to return to main menu and browse the other options
+    char ans;//variable used for user answer to if he/she wants to borrow a book
+    int id;
+    int bookno;//variable used to search book by book number
+    char takebook[300];
+
+    printf("For the free subscription, You can only take ONE book per day\n");
+    printf("Please enter the book number of the book you want to take: ");
+    scanf("%d",&bookno);
+
+    if(fp!=NULL)
+    {
+        while(!feof(fp))// read until the end of file
+        {
+            fscanf(fp,"%s", takebook);
+            /*converting string to integer using "atoi" function. "atoi" function is a function i found by searching on the Internet which
+            i will use for my searching process */
+
+            id = atoi(takebook);
+
+            if(id==bookno)
+            {
+                fgets(takebook, 300, (FILE*)fp);
+                printf("Book found\n");
+                printf("%s\n\n",takebook);
+                break;
+            }
+
+          }
+    }
+     else
+      printf("Book not found. Please Search again\n");
+
+      printf("Are You sure you want to borrow this book (Y/N): ");
+                scanf(" %c",&ans);
+
+     if(ans=='Y'|| ans=='y')//if users presses Y or y, he/she will be given a receipt for the book he/she took
+     {
+                printf("\nThank you for borrowing the book.\n");
+                printf("Please find your book receipt\n\n");
+                printf("|-------------------------------------------------------------------------------|\n");
+                printf("|Book Details:   %s                                           |\n",takebook);
+                printf("|-------------------------------|\n");
+                printf("|Duration of Borrow: 30 Days    |\n");
+                printf("|-------------------------------|\n");
+     }
+     else//if user presses N/n he/she will be taken to the main menu
+        printf("Book Not taken\n");
+
+
+    printf("Press any key & return to main menu>> ");
+    scanf(" %c",&mmu);
+    printf("Thank you!\n\n");
+}
+void AlevelGradecalc(void)
+{
+    //Purpose of this function is to give accurate grade based on the marks provided by the user for his/her CHOSEN subjects at A-Level
+
+    int numofsubs;//variable to store number of subs
+    char subs[30];//array type variable to store subject name
+    int marks;//variable to store student's marks
+    char *subpointer;//variable to find the name of the subject and help give grade for that subject
+    int i;//variable used for loop
+
+    printf("\t\t\t************************************************\n");
+    printf("\t\t\t*       A-LEVEL GRADE CALCULATOR               *\n");
+    printf("\t\t\t************************************************\n");
+    printf("\t\t\t              AVAILABLE SUBJECTS:                  \n");
+    printf("\t\t\t|-----------------------------------------------\n");
+    printf("\t\t\t| PHYSICS     |   MATHEMATICS   |   CHEMISTRY  |\n");
+    printf("\t\t\t|-----------------------------------------------\n");
+    printf("\t\t\t| BIOLOGY     |   ECONOMICS     |     LAW      |\n");
+    printf("\t\t\t|----------------------------------------------|\n");
+    printf("\t\t\t| BUSINESS    |   ACCOUNTING    |    HISTORY   |\n");
+    printf("\t\t\t|----------------------------------------------|\n");
+    printf("\t\t\t Please Indicate the Number of Subjects:");
+    scanf(" %d",&numofsubs);
+
+    for(i=0; i<numofsubs; i++)
+    {
+        printf("Enter your Subject:");
+        scanf(" %s",subs);
+        /* In A-Level, there are different overall marks for different subjects. Hence to be as accurate as possible I want the user
+        to know the total mark for each subject and check his/her grade accordingly. Thus, I am using if-else statements after the user
+        inputs his subject to calculate his/her grade for*/
+
+        if(strcmp(subs,"PHYSICS")|| strcmp(subs,"Physics") || strcmp(subs,"physics") || strcmp(subs,"CHEMISTRY")
+           || strcmp(subs,"Chemistry") || strcmp(subs,"chemistry") || strcmp(subs,"MATHEMATICS") || strcmp(subs,"Mathematics")
+           || strcmp(subs,"Maths") || strcmp(subs,"BIOLOGY") || strcmp(subs,"Biology") || strcmp(subs,"biology")|| strcmp(subs,"ACCOUNTING")
+           || strcmp(subs,"Accounting") || strcmp(subs,"accounting"))
+           printf("Enter Total Marks for A-Level %s out of 600>> ",subs);
+
+        else if(strcmp(subs,"ECONOMICS")|| strcmp(subs,"Economics") || strcmp(subs,"economics") || strcmp(subs,"BUSINESS")
+           || strcmp(subs,"Business") || strcmp(subs,"business") || strcmp(subs,"History") || strcmp(subs,"History")
+           || strcmp(subs,"history"))
+           printf("Enter Total Marks for A-Level %s out of 400>> ",subs);
+
+        else if(strcmp(subs,"LAW")|| strcmp(subs,"Law") || strcmp(subs,"law"))
+           printf("Enter Total Marks for A-Level %s out of 200>> ",subs);
+
+           scanf(" %d",&marks);
+
+
+        if(strcmp(subs,"PHYSICS")|| strcmp(subs,"Physics") || strcmp(subs,"physics") || strcmp(subs,"CHEMISTRY")
+           || strcmp(subs,"Chemistry") || strcmp(subs,"chemistry") || strcmp(subs,"MATHEMATICS") || strcmp(subs,"Mathematics")
+           || strcmp(subs,"Maths") || strcmp(subs,"BIOLOGY") || strcmp(subs,"Biology") || strcmp(subs,"biology")|| strcmp(subs,"ACCOUNTING")
+           || strcmp(subs,"Accounting") || strcmp(subs,"accounting"))/*Different versions of each word for each subject is considered so that
+           even if the user types the name of a subject differently while running the program, the program will still run perfectly*/
+           {
+             if(marks<600 && marks >=480)
+               printf("Overall Grade for IAL %s: A\n",subs);
+            else if(marks<480 && marks >=420)
+            printf("Overall Grade for IAL %s: B\n",subs);
+            else if(marks<420 && marks >=360)
+            printf("Overall Grade for IAL %s: C\n",subs);
+            else if(marks<360 && marks>=300)
+            printf("Overall Grade for IAL %s: D\n",subs);
+            else if(marks<300 &&marks>=240)
+            printf("Overall Grade for IAL %s: E\n",subs);
+            else if(marks<240){
+            printf("Overall Grade for IAL %s: U\n",subs);
+            printf("FAILED!\n");
+           }
+        }
+        else if(strcmp(subs,"ECONOMICS")|| strcmp(subs,"Economics") || strcmp(subs,"economics") || strcmp(subs,"BUSINESS")
+           || strcmp(subs,"Business") || strcmp(subs,"business") || strcmp(subs,"History") || strcmp(subs,"History")
+           || strcmp(subs,"history"))/* Again,different versions of each word for each subject is considered so that
+           even if the user types the name of a subject differently while running the program and the program will still run perfectly*/
+           {
+               if(marks<400 && marks >=320)
+               printf("Overall Grade for IAL %s: A\n",subs);
+            else if(marks<320 && marks >=280)
+            printf("Overall Grade for IAL %s: B\n",subs);
+            else if(marks<280 && marks >=240)
+            printf("Overall Grade for IAL %s: C\n",subs);
+            else if(marks<240 && marks>=200)
+            printf("Overall Grade for IAL %s: D\n",subs);
+            else if(marks<200 &&marks>=160)
+            printf("Overall Grade for IAL %s: E\n",subs);
+            else if(marks<160){
+            printf("Overall Grade for IAL %s: U\n",subs);
+            printf("FAILED!\n");
+           }
+        }
+       else if(strcmp(subs,"LAW")|| strcmp(subs,"Law") || strcmp(subs,"law"))
+       {
+            if(marks<200 && marks >=160)
+               printf("Overall Grade for IAL %s: A\n",subs);
+            else if(marks<200 && marks >=140)
+            printf("Overall Grade for IAL %s: B\n",subs);
+            else if(marks<140 && marks >=120)
+            printf("Overall Grade for IAL %s: C\n",subs);
+            else if(marks<120 && marks>=100)
+            printf("Overall Grade for IAL %s: D\n",subs);
+            else if(marks<100 &&marks>=80)
+            printf("Overall Grade for IAL %s: E\n",subs);
+            else if(marks<80){
+            printf("Overall Grade for IAL %s: U\n",subs);
+            printf("FAILED!\n");
+       }
+
+    }
+
+}
+    char mmu;//random variable taken to return to main menu and browse the other options
+    printf("Press any key & return to main menu>> ");
+    scanf(" %c",&mmu);
+    printf("Thank you!\n\n");
+}
+void EXIT(void)
+{
+     char ans;//variable taken to store the answer of the user
+     char mmu;//random variable taken to return to main menu and browse the other options if user presses no
+
+     printf("\t\t\t Are you sure you want to Log-out??(Y/N): ");
+     scanf(" %c",&ans);
+
+     switch(ans)
+     {
+     case 'Y':{
+     case 'y':
+         printf("Thank you for using the A-Level Library!");
+        exit(0);
+     }
+        break;
+     case 'N':{
+     case 'n':
+        printf("Press any key to return to main menu>> ");//will take the user to the main menu
+        scanf(" %c",&mmu);
+        printf("Thank you!\n\n");
+        }
+        break;
+
+    }
+}
+
